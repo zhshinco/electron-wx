@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="css/lrtk.css">
+<link rel="stylesheet" href="css/main.css">
+<script src="js/hashtabber.js"></script>
+<script src="js/jquery-1.9.1.js"></script>
+<script>
+        // const {BrowserWindow} = require('electron').remote;
+        console.log(jQuery);
+
+        function newWin(){
+            // let win = new BrowserWindow({width: 800, height: 600,tabbingIdentifier:'main'})
+            // win.on('closed', () => {
+            // win = null
+            // })
+
+            // // Load a remote URL
+            // win.loadURL('https://wx.qq.com/')
+            $("#tabMenu").append('<li data-hashtabber-pair="eoraptor" class=""> <a href="#dinosaurs=eoraptor">Weixin3</a></li>');
+            $("#tabContent").append('<li data-hashtabber-pair="eoraptor" class=""> <webview src="https://wx.qq.com/" partition="persist:weixin3"></webview></li>');
+        }
+    </script>
+  <style>
+  webview {
+    display:inline-flex;
+    width:640px;
+    height:480px;
+  }
+  webview.hide {
+    flex: 0 1;
+    width: 0px;
+    height: 0px;
+  }
+</style>  
+</head>
+<body>
+
+<section class="example">
+	<section class="hashTabber-sandstone-wrapper">
+    <ol class="hashTabber-nav hashTabber-sandstone" data-hashtabber-id="dinosaurs" data-hashtabber-default="trilobite" id="tabMenu">
+        <h2>Species:</h2>
+            <li data-hashtabber-pair="trilobite" class="">
+                <a href="#dinosaurs=trilobite">Electron</a>
+            </li>
+            <li data-hashtabber-pair="velociraptor" class="">
+                <a href="#dinosaurs=velociraptor">Github</a>
+            </li>
+            <li data-hashtabber-pair="pterosaur" class="">
+                <a href="#dinosaurs=pterosaur">WebWeixin1</a>
+            </li>
+            <li data-hashtabber-pair="lambeosaurus" class="">
+                <a href="#dinosaurs=lambeosaurus">WebWeixin2</a>
+            </li>
+    </ol><!--
+ --><ol class="hashTabber-data hashTabber-sandstone" data-hashtabber-id="dinosaurs" id="tabContent">
+            <li data-hashtabber-pair="trilobite" class="">
+               <webview src="https://github.com" partition="persist:github"></webview>
+            </li>
+            <li data-hashtabber-pair="velociraptor" class="">
+               <webview src="https://electron.atom.io" partition="persist:electron"></webview>
+            </li>
+        
+            <li data-hashtabber-pair="pterosaur" class="">
+               <webview src="https://wx.qq.com/" partition="persist:weixin1"></webview>
+            </li>
+            <li data-hashtabber-pair="lambeosaurus" class="">
+                <webview src="https://wx.qq.com/" partition="persist:weixin2"></webview>
+            </li>
+    </ol>
+	</section>
+</section>
+<br/>
+<button onclick="newWin()">增加微信</button>
+<script>
+var tabber = new HashTabber();
+tabber.run();
+</script>
+</body>
+</html>
