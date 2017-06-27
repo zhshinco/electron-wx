@@ -80,9 +80,27 @@ var tabber = new HashTabber();
 tabber.run();
 
  // const {BrowserWindow} = require('electron').remote;
+var cacheObj = {};
+
 const webview1 = document.getElementById('weixin1');
 webview1.addEventListener("did-finish-load",function(){
-   //webview1.openDevTools();
+    webview1.openDevTools();
+    webview1.executeJavaScript('document.cookie',function(result){
+        var cookieList = result.split(";");
+        for(let i=0;i<cookieList.length;i++){
+            var cookiePair = cookieList[i].split("=");
+            if(cookiePair[0].trim() == 'wxuin'){
+                cacheObj['Uin'] = cookiePair[1];
+            }else if(cookiePair[0].trim() == 'webwxuvid'){
+                cacheObj['webwxuvid'] = cookiePair[1];
+            }else if(cookiePair[0].trim() == 'webvx_data_ticket'){
+                cacheObj['webwx_data_ticket'] = cookiePair[1];
+            }else if(cookiePair[0].trim() == 'webvx_auth_ticket'){
+                cacheObj['webwx_auth_ticket'] = cookiePair[1];
+            }
+        }
+        console.log(cacheObj);
+     });
 });
 // webview1.addEventListener("did-get-response-details",function(event){
 //    console.log(event);
@@ -99,7 +117,13 @@ webview1.addEventListener("did-finish-load",function(){
 }
 
  function getDialogList(){
-     webview1.executeJavaScript('$("i.web_wechat_tab_chat").click(); window._chatContent',function(result){
+     webview1.executeJavaScript('window._chatContent',function(result){
+        //$("i.web_wechat_tab_chat").click();
+        console.log(result);
+     });
+
+     webview1.executeJavaScript('window',function(result){
+        //$("i.web_wechat_tab_chat").click();
         console.log(result);
      })
 }
