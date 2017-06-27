@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -18,7 +18,7 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-  //win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -51,5 +51,9 @@ app.on('activate', () => {
   }
 })
 
+ipcMain.on('ping', (event, arg) => {
+  console.log(arg)  // prints "ping"
+  event.sender.send('asynchronous-reply', 'pong')
+})
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

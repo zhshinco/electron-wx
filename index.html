@@ -9,9 +9,6 @@
 <script src="js/hashtabber.js"></script>
 <script src="js/jquery-1.9.1.js"></script>
 <script>
-        // const {BrowserWindow} = require('electron').remote;
-        console.log(jQuery);
-
         function newWin(){
             // let win = new BrowserWindow({width: 800, height: 600,tabbingIdentifier:'main'})
             // win.on('closed', () => {
@@ -47,7 +44,7 @@
                 <a href="#dinosaurs=trilobite">Electron</a>
             </li>
             <li data-hashtabber-pair="velociraptor" class="">
-                <a href="#dinosaurs=velociraptor">Github</a>
+                <a href="#dinosaurs=velociraptor">通讯录</a>
             </li>
             <li data-hashtabber-pair="pterosaur" class="">
                 <a href="#dinosaurs=pterosaur">WebWeixin1</a>
@@ -58,14 +55,15 @@
     </ol><!--
  --><ol class="hashTabber-data hashTabber-sandstone" data-hashtabber-id="dinosaurs" id="tabContent">
             <li data-hashtabber-pair="trilobite" class="">
-               <webview src="https://github.com" partition="persist:github"></webview>
+               <webview src="https://electron.atom.io" partition="persist:github"></webview>
             </li>
             <li data-hashtabber-pair="velociraptor" class="">
-               <webview src="https://electron.atom.io" partition="persist:electron"></webview>
+               <div id="contactList">
+               </div>    
             </li>
         
             <li data-hashtabber-pair="pterosaur" class="">
-               <webview src="https://wx.qq.com/" partition="persist:weixin1"></webview>
+               <webview src="https://wx.qq.com/" partition="persist:weixin1" id="weixin1"></webview>
             </li>
             <li data-hashtabber-pair="lambeosaurus" class="">
                 <webview src="https://wx.qq.com/" partition="persist:weixin2"></webview>
@@ -74,10 +72,38 @@
 	</section>
 </section>
 <br/>
-<button onclick="newWin()">增加微信</button>
+<button onclick="newWin()">增加微信</button>&nbsp;&nbsp;
+<button onclick="getContactList()">获取通讯录</button>&nbsp;&nbsp;
+<button onclick="getDialogList()">获取聊天记录</button>
 <script>
 var tabber = new HashTabber();
 tabber.run();
+
+ // const {BrowserWindow} = require('electron').remote;
+const webview1 = document.getElementById('weixin1');
+webview1.addEventListener("did-finish-load",function(){
+   //webview1.openDevTools();
+});
+// webview1.addEventListener("did-get-response-details",function(event){
+//    console.log(event);
+// });
+
+ function getContactList(){
+     webview1.executeJavaScript('$("i.web_wechat_tab_friends").click(); window._contacts',function(result){
+        console.log(result);
+        for(prop in result){
+            console.log(prop);
+            console.log(result[prop]);
+        }
+     })
+}
+
+ function getDialogList(){
+     webview1.executeJavaScript('$("i.web_wechat_tab_chat").click(); window._chatContent',function(result){
+        console.log(result);
+     })
+}
+
 </script>
 </body>
 </html>
