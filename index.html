@@ -81,10 +81,10 @@ tabber.run();
 
  // const {BrowserWindow} = require('electron').remote;
 var cacheObj = {};
+var contentCache = {};
 
 const webview1 = document.getElementById('weixin1');
 webview1.addEventListener("did-finish-load",function(){
-    webview1.openDevTools();
     webview1.executeJavaScript('document.cookie',function(result){
         var cookieList = result.split(";");
         for(let i=0;i<cookieList.length;i++){
@@ -99,7 +99,7 @@ webview1.addEventListener("did-finish-load",function(){
                 cacheObj['webwx_auth_ticket'] = cookiePair[1];
             }
         }
-        console.log(cacheObj);
+        //console.log(cacheObj);
      });
 });
 // webview1.addEventListener("did-get-response-details",function(event){
@@ -127,6 +127,34 @@ webview1.addEventListener("did-finish-load",function(){
         console.log(result);
      })
 }
+
+//获取聊天记录
+setInterval(function(){
+    webview1.executeJavaScript('window._chatContent',function(result){
+        for(prop in result){
+            if(prop != ""){
+            var contentArr = result[prop];
+            var tempArray = [];
+
+            if(contentArr && contentArr.length > 0){
+                for(let i=0;i<contentArr.length;i++){
+                    var contentObj = {};
+                    contentObj.Content = contentArr[i].Content;
+                    contentObj.CreateTime = contentArr[i].CreateTime;
+                    contentObj.FromUserName = contentArr[i].FromUserName;
+                    contentObj.ToUserName = contentArr[i].ToUserName;
+                    contentObj.ClientMsgId = contentArr[i].ClientMsgId;
+                    contentObj.MsgId = contentArr[i].MsgId;
+                    contentObj.MsgType = contentArr[i].MsgType;
+                    tempArray.push(contentObj);
+                }
+            }
+            contentCache[prop] = tempArray;
+            }
+    }
+    console.log(contentCache);
+    });
+},1000)  
 
 </script>
 </body>
